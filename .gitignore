@@ -1,0 +1,17 @@
+# Environment & Secrets
+.env
+*.env
+ipl_fans_emoji_reaction_engine/.env
+
+# Python Virtual Environment & Cache
+venv/
+.venv/
+.venv-1/
+ipl_fans_emoji_reaction_engine/.venv
+__pycache__/
+*.py[cod]
+
+# IDE settings
+.vscode/
+.idea/
+ipl_fans_emoji_reaction_engine/.vscode
