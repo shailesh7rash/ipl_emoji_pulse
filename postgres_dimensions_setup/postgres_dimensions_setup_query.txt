@@ -1,0 +1,81 @@
+-- ============================================================================
+-- STATIC DIMENSION TABLES FOR IPL 2026 FINAL (MI vs CSK)
+-- ============================================================================
+
+-- Drop existing tables if re-running setup
+DROP TABLE IF EXISTS dim_emoji;
+DROP TABLE IF EXISTS dim_player;
+
+-- ============================================================================
+-- TABLE 1: dim_emoji (Sentiment Polarity & Crowd Energy Lookup)
+-- ============================================================================
+CREATE TABLE dim_emoji (
+    emoji_id           VARCHAR(10) PRIMARY KEY,
+    emoji_symbol       VARCHAR(10) NOT NULL,
+    emoji_name         VARCHAR(30) NOT NULL,
+    mood_category      VARCHAR(20) NOT NULL,    -- 'Euphoria', 'Appreciation', 'Shock', 'Amusement', 'Heartbreak', 'Frustration', 'Hype'
+    sentiment_polarity NUMERIC(4,2) NOT NULL,   -- Range: -1.00 (Extreme Negative) to +1.00 (Extreme Positive)
+    arousal_intensity  NUMERIC(4,2) NOT NULL,   -- Range:  0.10 (Calm) to 1.00 (Explosive Crowd Frenzy)
+    is_positive        BOOLEAN NOT NULL,
+    updated_at         TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO dim_emoji (emoji_id, emoji_symbol, emoji_name, mood_category, sentiment_polarity, arousal_intensity, is_positive) VALUES
+('EMJ_01', '🔥', 'Fire',       'Euphoria',      1.00, 1.00, TRUE),
+('EMJ_02', '🎉', 'Celebrate',  'Euphoria',      0.90, 0.90, TRUE),
+('EMJ_03', '👏', 'Clap',       'Appreciation',  0.65, 0.50, TRUE),
+('EMJ_04', '😱', 'Shock',      'Shock',         0.10, 1.00, TRUE),
+('EMJ_05', '😂', 'Laugh',      'Amusement',     0.45, 0.60, TRUE),
+('EMJ_06', '💔', 'Heartbreak', 'Heartbreak',   -1.00, 0.95, FALSE),
+('EMJ_07', '😡', 'Angry',      'Frustration',  -0.85, 0.90, FALSE),
+('EMJ_08', '🏏', 'BatSwing',   'Hype',          0.55, 0.70, TRUE);
+
+-- ============================================================================
+-- TABLE 2: dim_player (IPL 2026 Final Playing XI Squads: MI & CSK)
+-- ============================================================================
+CREATE TABLE dim_player (
+    player_id           VARCHAR(15) PRIMARY KEY,
+    player_name         VARCHAR(50) NOT NULL,
+    jersey_number       INT NOT NULL,
+    team_code           VARCHAR(10) NOT NULL,    -- 'MI' or 'CSK'
+    team_full_name      VARCHAR(40) NOT NULL,
+    player_country      VARCHAR(30) NOT NULL,
+    player_role         VARCHAR(20) NOT NULL,    -- 'Batter', 'Bowler', 'All-Rounder', 'WK-Batter'
+    batting_style       VARCHAR(25) NOT NULL,
+    bowling_style       VARCHAR(35) NOT NULL,
+    fan_popularity_tier VARCHAR(20) NOT NULL,    -- 'TIER_1_ICON', 'TIER_2_STAR', 'TIER_3_PRO'
+    is_captain          BOOLEAN NOT NULL DEFAULT FALSE,
+    updated_at          TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Mumbai Indians (MI) Playing Squad
+INSERT INTO dim_player (player_id, player_name, jersey_number, team_code, team_full_name, player_country, player_role, batting_style, bowling_style, fan_popularity_tier, is_captain) VALUES
+('MI_44', 'Ryan Rickelton',   44, 'MI', 'Mumbai Indians', 'South Africa', 'WK-Batter',   'Left-hand bat',  'None',                  'TIER_2_STAR', FALSE),
+('MI_22', 'Will Jacks',       22, 'MI', 'Mumbai Indians', 'England',      'All-Rounder', 'Right-hand bat', 'Right-arm offbreak',    'TIER_2_STAR', FALSE),
+('MI_19', 'Naman Dhir',       19, 'MI', 'Mumbai Indians', 'India',        'All-Rounder', 'Right-hand bat', 'Right-arm offbreak',    'TIER_3_PRO',  FALSE),
+('MI_63', 'Suryakumar Yadav', 63, 'MI', 'Mumbai Indians', 'India',        'Batter',      'Right-hand bat', 'Right-arm offbreak',    'TIER_1_ICON', FALSE),
+('MI_09', 'Tilak Varma',       9, 'MI', 'Mumbai Indians', 'India',        'Batter',      'Left-hand bat',  'Right-arm offbreak',    'TIER_2_STAR', FALSE),
+('MI_33', 'Hardik Pandya',    33, 'MI', 'Mumbai Indians', 'India',        'All-Rounder', 'Right-hand bat', 'Right-arm fast-medium', 'TIER_1_ICON', TRUE),
+('MI_10', 'Robin Minz',       10, 'MI', 'Mumbai Indians', 'India',        'WK-Batter',   'Left-hand bat',  'None',                  'TIER_3_PRO',  FALSE),
+('MI_18', 'Trent Boult',      18, 'MI', 'Mumbai Indians', 'New Zealand',  'Bowler',      'Right-hand bat', 'Left-arm fast-medium',  'TIER_1_ICON', FALSE),
+('MI_93', 'Jasprit Bumrah',   93, 'MI', 'Mumbai Indians', 'India',        'Bowler',      'Right-hand bat', 'Right-arm fast',        'TIER_1_ICON', FALSE),
+('MI_70', 'AM Ghazanfar',     70, 'MI', 'Mumbai Indians', 'Afghanistan',  'Bowler',      'Right-hand bat', 'Right-arm offbreak',    'TIER_3_PRO',  FALSE),
+('MI_24', 'Krish Bhagat',     24, 'MI', 'Mumbai Indians', 'India',        'Bowler',      'Right-hand bat', 'Right-arm medium',      'TIER_3_PRO',  FALSE);
+
+-- Chennai Super Kings (CSK) Playing Squad
+INSERT INTO dim_player (player_id, player_name, jersey_number, team_code, team_full_name, player_country, player_role, batting_style, bowling_style, fan_popularity_tier, is_captain) VALUES
+('CSK_31', 'Ruturaj Gaikwad',   31, 'CSK', 'Chennai Super Kings', 'India',        'Batter',      'Right-hand bat', 'Right-arm offbreak',    'TIER_1_ICON', TRUE),
+('CSK_07', 'Sanju Samson',       7, 'CSK', 'Chennai Super Kings', 'India',        'WK-Batter',   'Right-hand bat', 'None',                  'TIER_1_ICON', FALSE),
+('CSK_14', 'Urvil Patel',       14, 'CSK', 'Chennai Super Kings', 'India',        'WK-Batter',   'Right-hand bat', 'None',                  'TIER_3_PRO',  FALSE),
+('CSK_17', 'Dewald Brevis',     17, 'CSK', 'Chennai Super Kings', 'South Africa', 'Batter',      'Right-hand bat', 'Legbreak',              'TIER_2_STAR', FALSE),
+('CSK_25', 'Shivam Dube',       25, 'CSK', 'Chennai Super Kings', 'India',        'All-Rounder', 'Left-hand bat',  'Right-arm medium',      'TIER_1_ICON', FALSE),
+('CSK_12', 'Kartik Sharma',     12, 'CSK', 'Chennai Super Kings', 'India',        'Batter',      'Right-hand bat', 'None',                  'TIER_3_PRO',  FALSE),
+('CSK_88', 'Jamie Overton',     88, 'CSK', 'Chennai Super Kings', 'England',      'All-Rounder', 'Right-hand bat', 'Right-arm fast',        'TIER_2_STAR', FALSE),
+('CSK_21', 'Ramakrishna Ghosh', 21, 'CSK', 'Chennai Super Kings', 'India',        'All-Rounder', 'Right-hand bat', 'Right-arm medium',      'TIER_3_PRO',  FALSE),
+('CSK_15', 'Noor Ahmad',        15, 'CSK', 'Chennai Super Kings', 'Afghanistan',  'Bowler',      'Right-hand bat', 'Left-arm wrist-spin',   'TIER_2_STAR', FALSE),
+('CSK_11', 'Anshul Kamboj',     11, 'CSK', 'Chennai Super Kings', 'India',        'Bowler',      'Right-hand bat', 'Right-arm fast-medium', 'TIER_3_PRO',  FALSE),
+('CSK_90', 'Mukesh Choudhary',  90, 'CSK', 'Chennai Super Kings', 'India',        'Bowler',      'Left-hand bat',  'Left-arm fast-medium',  'TIER_3_PRO',  FALSE);
+
+-- Quick Verification Queries
+SELECT COUNT(*) AS emoji_count FROM dim_emoji;
+SELECT team_code, COUNT(*) AS squad_size FROM dim_player GROUP BY team_code;
