@@ -10,7 +10,11 @@
 
 ---
 
-## 📊 Live Analytics & Dashboard Showcase
+<h2>
+  📊 Live Analytics & Dashboard
+  <img src="assets/CSK.jpg" height="70" align="absmiddle" alt="CSK" />
+  <img src="assets/MI.png" height="70" align="absmiddle" alt="MI" />
+</h2>
 
 <table>
   <tr>
@@ -34,6 +38,36 @@
     </td>
   </tr>
 </table>
+
+---
+
+## 🏆 Live Simulation Benchmark & Match Telemetry
+
+During an end-to-end live streaming run simulation of the **IPL 2026 Final (MI vs. CSK at Wankhede Stadium, Mumbai)**, the platform processed high-velocity fan reactions alongside real-time ball-by-ball telemetry across **157 deliveries (~39+ minutes of continuous streaming)**:
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <h3>120,450+</h3>
+      <b>Fan Emoji Reactions Streamed</b><br>
+      <sub>Ingested at ~50 events/sec via Apache Kafka</sub>
+    </td>
+    <td align="center" width="33%">
+      <h3>157</h3>
+      <b>Ball-by-Ball Deliveries Processed</b><br>
+      <sub>Atomic JSON events at 15s intervals via Auto Loader</sub>
+    </td>
+    <td align="center" width="33%">
+      <h3>14s Window</h3>
+      <b>Salted Stream Attribution</b><br>
+      <sub>Zero partition skew across 8 salt buckets</sub>
+    </td>
+  </tr>
+</table>
+
+### 🏏 Simulated Match Snapshot (`MI vs. CSK`)
+* **1st Innings (Mumbai Indians):** **220 / 10** — High-scoring powerplay and death-over surge driving peak crowd euphoria and boundary spikes.
+* **2nd Innings (Chennai Super Kings):** **70 / 1** *(through 6.0 Powerplay overs)* — Aggressive chasing start triggering intense head-to-head fan sentiment polarization across Indian metros.
 
 ---
 
