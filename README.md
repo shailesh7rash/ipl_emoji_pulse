@@ -43,7 +43,7 @@
 
 ## 🏆 Live Simulation Benchmark & Match Telemetry
 
-During an end-to-end live streaming run simulation of the **IPL 2026 Final (MI vs. CSK at Wankhede Stadium, Mumbai)**, the platform processed high-velocity fan reactions alongside real-time ball-by-ball telemetry across **157 deliveries (~39+ minutes of continuous streaming)**:
+During an end-to-end live streaming run simulation of the **IPL Final (MI vs. CSK at Wankhede Stadium, Mumbai)**, the platform processed high-velocity fan reactions alongside real-time ball-by-ball telemetry across **157 deliveries (~39+ minutes of continuous streaming)**:
 
 <table>
   <tr>
