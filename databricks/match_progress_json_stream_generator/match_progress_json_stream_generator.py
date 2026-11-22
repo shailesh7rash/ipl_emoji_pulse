@@ -315,7 +315,7 @@ def simulate_delivery(state: dict) -> tuple[dict, dict]:
 
 # COMMAND ----------
 
-# DBTITLE 1,5. MAIN STREAMING LOOP (15s INTERVAL)
+# DBTITLE 1,MAIN STREAMING LOOP (15s INTERVAL)
 # ==========================================
 # 5. MAIN STREAMING LOOP (15s INTERVAL)
 # ==========================================
@@ -329,7 +329,11 @@ else:
             event, state = simulate_delivery(state)
             
             # Atomic write: write to .tmp then rename to .json so Auto Loader reads clean files
-            file_name = f"ball_{state['seq_num']:03d}_inn{event['innings']}_ov{event['over_number']}_b{event['ball_in_over']}.json"
+            # file_name = f"ball_{state['seq_num']:03d}_inn{event['innings']}_ov{event['over_number']}_b{event['ball_in_over']}.json"
+            # Added timestamp to file name to avoid overwriting files in case of multiple runs
+            run_ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+            file_name = f"ball_{state['seq_num']:03d}_inn{event['innings']}_ov{event['over_number']}_b{event['ball_in_over']}_{run_ts}.json"
+
             tmp_path = os.path.join(LANDING_DIR, f".{file_name}.tmp")
             final_path = os.path.join(LANDING_DIR, file_name)
             
